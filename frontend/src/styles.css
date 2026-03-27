@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased overflow-x-hidden text-medtext font-sans selection:bg-medprimary-200 selection:text-medprimary-900 bg-medbg;
+  }
+}
+
+.bg-mesh {
+  background-image:
+    radial-gradient(at 0% 0%, hsla(199, 89%, 48%, 0.15) 0px, transparent 50%),
+    radial-gradient(at 50% 0%, hsla(187, 92%, 69%, 0.1) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(199, 89%, 48%, 0.15) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+
+.glass {
+  @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-glass;
+}
+
+.glass-dark {
+  @apply bg-white/40 backdrop-blur-md border border-white/10 shadow-glass-sm;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.card-hover {
+  @apply transition-all duration-300 hover:shadow-premium hover:-translate-y-1;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}

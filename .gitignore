@@ -1,0 +1,19 @@
+# Node.js
+node_modules/
+dist/
+build/
+.env
+
+# Python
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+
+# Logs & Temporary
+*.log
+tmp/
+.vscode/
+.idea/
+.gemini/

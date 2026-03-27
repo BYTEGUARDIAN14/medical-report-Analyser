@@ -1,0 +1,3 @@
+Summarize this medical report in simple, easy-to-understand language. 
+Explain all complex medical terms and ensure the tone is professional yet accessible for a patient. 
+Focus on the key findings, abnormalities, and recommended next steps.
