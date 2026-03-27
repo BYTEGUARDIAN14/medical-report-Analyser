@@ -154,7 +154,7 @@ const ResultPage = () => {
                         <h4 className="text-lg font-bold">Smart Translation</h4>
                       </div>
                       <div className="flex gap-2 p-1 bg-slate-100 rounded-2xl">
-                        {["Hindi", "Tamil", "English"].map(lang => (
+                        {["Hindi", "English"].map(lang => (
                           <button 
                             key={lang}
                             onClick={() => lang === "English" ? setTranslation("") : handleTranslate(lang)}
