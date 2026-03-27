@@ -27,7 +27,7 @@ const ResultPage = () => {
 
   if (!data) return null;
 
-  const { extractedText, summary, simplified, alerts, suggestions, severity_score, ai_confidence } = data;
+  const { extractedText, summary, simplified, alerts, suggestions, severity_score, ai_confidence, specialists, stats } = data;
   const normalizedSearch = searchTerm.trim().toLowerCase();
 
   const handleTranslate = async (lang) => {
@@ -220,6 +220,44 @@ const ResultPage = () => {
                       <motion.div initial={{width:0}} animate={{width:`${ai_confidence}%`}} className="h-full bg-medprimary-500" />
                    </div>
                 </div>
+              </div>
+
+              {/* Lab Stats Card */}
+              <div className="glass rounded-[2rem] p-8 flex items-center justify-around text-center">
+                  <div>
+                    <p className="text-2xl font-bold text-medtext">{stats?.total_estimated || 0}</p>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Total Observations</p>
+                  </div>
+                  <div className="h-10 w-[1px] bg-slate-100" />
+                  <div>
+                    <p className="text-2xl font-bold text-meddanger">{stats?.abnormal || 0}</p>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Abnormal Findings</p>
+                  </div>
+                  <div className="h-10 w-[1px] bg-slate-100" />
+                  <div>
+                    <p className="text-2xl font-bold text-medsuccess">{(stats?.total_estimated - stats?.abnormal) || 0}</p>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Normal Ranges</p>
+                  </div>
+              </div>
+
+              {/* Specialist Recommendations */}
+              <div className="glass rounded-[2.5rem] p-8 border-l-8 border-violet-500 shadow-premium">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-violet-50 rounded-2xl flex items-center justify-center text-violet-500">
+                      <FiActivity size={24} />
+                    </div>
+                    <h4 className="text-lg font-bold text-slate-700">Recommended Specialists</h4>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    {specialists?.map(s => (
+                      <span key={s} className="px-5 py-2.5 bg-violet-50 text-violet-600 rounded-2xl text-sm font-bold border border-violet-100 shadow-sm">
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="mt-6 text-xs text-slate-400 font-medium italic">
+                    Note: This is an AI-generated suggestion based on report keywords. Consult your family doctor first.
+                  </p>
               </div>
 
               {/* Lifestyle Suggestions */}

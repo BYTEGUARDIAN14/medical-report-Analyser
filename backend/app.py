@@ -145,8 +145,26 @@ def analyze():
 
     alerts = detect_abnormalities(text)
     
+    # Advanced Diagnostics: Specialist Suggestions
+    specialist_list = []
+    l_text = text.lower()
+    if any(k in l_text for k in ["glucose", "diabetes", "insulin", "sugar", "hba1c"]):
+        specialist_list.append("Endocrinologist")
+    if any(k in l_text for k in ["blood pressure", "bp", "hypertension", "140/", "150/", "systolic"]):
+        specialist_list.append("Cardiologist")
+    if any(k in l_text for k in ["hemoglobin", "hgb", "anemia", "anemic", "ferritin"]):
+        specialist_list.append("Hematologist")
+    if any(k in l_text for k in ["kidney", "renal", "creatinine", "nephropathy"]):
+        specialist_list.append("Nephrologist")
+    if any(k in l_text for k in ["liver", "alt ", "ast ", "bilirubin", "hepatic"]):
+        specialist_list.append("Hepatologist / Gastroenterologist")
+    
+    # Aggregated Stats
+    abnormal_count = len(alerts)
+    total_findings_est = len(text.split("\n"))
+    
     # Calculate Severity Score (0-100)
-    severity_base = len(alerts) * 20
+    severity_base = abnormal_count * 20
     severity_score = min(95, severity_base if severity_base > 0 else 10)
     if any("critical" in a.lower() for a in alerts):
         severity_score = max(severity_score, 85)
@@ -158,7 +176,12 @@ def analyze():
             "suggestions": suggestions,
             "alerts": alerts,
             "severity_score": severity_score,
-            "ai_confidence": 92 if severity_score < 80 else 88, # Estimated based on complexity
+            "ai_confidence": 92 if severity_score < 80 else 88,
+            "specialists": list(set(specialist_list)) if specialist_list else ["General Physician"],
+            "stats": {
+                "abnormal": abnormal_count,
+                "total_estimated": total_findings_est
+            }
         }
     )
 
@@ -180,9 +203,16 @@ def translate():
         }), 503
 
     try:
-        # Improved prompt for T5-small translation task
-        translate_prompt = f"translate English to {target_lang}: {text}"
-        translated = run_with_timeout(manager.generate_translation, translate_prompt, max_length=512, timeout=90)
+        # Load custom translation prompt
+        custom_t_prefix = f"translate English to {target_lang}:"
+        try:
+            with open("translation.txt", "r") as f:
+                custom_t_prefix = f.read().strip().replace("{target_lang}", target_lang)
+        except Exception:
+            pass
+
+        translate_prompt = f"{custom_t_prefix}\n\nText to Translate:\n{text}"
+        translated = run_with_timeout(manager.generate_translation, translate_prompt, max_length=512, timeout=120)
         
         if not translated or not translated.strip() or translated == ".":
             translated = f"[Translation unavailable for {target_lang}]"
