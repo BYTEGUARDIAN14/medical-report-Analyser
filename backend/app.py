@@ -203,19 +203,12 @@ def translate():
         }), 503
 
     try:
-        # Load custom translation prompt
-        custom_t_prefix = f"translate English to {target_lang}:"
-        try:
-            with open("translation.txt", "r") as f:
-                custom_t_prefix = f.read().strip().replace("{target_lang}", target_lang)
-        except Exception:
-            pass
-
-        translate_prompt = f"{custom_t_prefix}\n\nText to Translate:\n{text}"
-        translated = run_with_timeout(manager.generate_translation, translate_prompt, max_length=512, timeout=120)
+        # M2M100 is a specialized translation model that performs best
+        # with direct text-to-text mapping without verbose prompts.
+        translated = run_with_timeout(manager.translate, text, target_lang, max_length=512, timeout=120)
         
         if not translated or not translated.strip() or translated == ".":
-            translated = f"[Translation unavailable for {target_lang}]"
+            translated = f"[Translation unavailable for {target_lang} - ensure characters are supported]"
             
         return jsonify({"translatedText": translated.strip()})
     except FuturesTimeoutError:

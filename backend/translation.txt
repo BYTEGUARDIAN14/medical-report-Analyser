@@ -1,4 +1,2 @@
-Translate the following medical summary into the requested language (Hindi or Tamil). 
-Ensure the translation is medically accurate but simple for a patient to understand. 
-Include 2-3 specific health suggestions or lifestyle advice based on the findings in the translated text. 
-Maintain a supportive and clear tone throughout the response.
+translate English to {target_lang}:
+{text}
